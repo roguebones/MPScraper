@@ -12,10 +12,16 @@ import requests
 
 def main():
     #user_url = 'https://www.mountainproject.com/user/15116/blitzo/photos'
-    user_url = 'https://www.mountainproject.com/user/200084808/chase-g/photos'
-    download_all_images(user_url)
 
-    # TODO: take user input of user_url
+    user_id = 200084808
+    download_all_images(user_id)
+
+    # TODO: take user input of user_id
+
+def get_shared_photo_url_from_user_id(user_id):
+    base_string = 'https://www.mountainproject.com/user/'
+    r = requests.get(base_string + str(user_id))
+    return r.url + '/photos'
 
 def make_soup(url):
     html = urllib.request.urlopen(url).read()
@@ -65,7 +71,9 @@ def get_images(url):
 
     return image_links
 
-def download_all_images(url):
+def download_all_images(user_id):
+
+    url = get_shared_photo_url_from_user_id(user_id)
     
     for item in make_url_list(url):
         get_images(item)
